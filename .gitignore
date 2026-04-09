@@ -1,4 +1,4 @@
-HELP.md
+mannabom-server/HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -47,6 +47,7 @@ out/
 mannabom-server/.env*
 mannabom-server/src/.env*
 .DS_Store
+.idea/*
 
 #firebase 비밀키
 **/src/main/resources/firebase/
