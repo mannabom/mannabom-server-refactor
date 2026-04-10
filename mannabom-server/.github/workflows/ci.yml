@@ -11,28 +11,73 @@ jobs:
     name: test-and-coverage
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: mannabom_test
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U testuser -d mannabom_test"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
-      - name: Set up Java
+      redis:
+        image: redis:6-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Repository 체크 아웃
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: JDK 17 설치
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      - name: Set up Gradle
+      - name: Gradle 세팅
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Grant execute permission
+      - name: 실행 권한 부여
         working-directory: mannabom-server
         run: chmod +x gradlew
 
-      - name: Run tests and coverage verification
+      - name: Gradle 실행 및 테스트 결과 리포트 작성
         working-directory: mannabom-server
+        env:
+          SPRING_PROFILES_ACTIVE: test
         run: ./gradlew clean test jacocoTestReport jacocoTestCoverageVerification
 
-      - name: Upload coverage report artifact
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: diff-cover 설치
+        run: pip install diff-cover
+
+      - name: PR 변경항목에 대해 테스트 커버리지 충족 여부 확인
+        if: github.event_name == 'pull_request'
+        working-directory: mannabom-server
+        run: |
+          diff-cover build/reports/jacoco/test/jacocoTestReport.xml \
+            --compare-branch=origin/${{ github.base_ref }} \
+            --fail-under=80
+
+      - name: 테스트 결과 리포트 업로드
         if: always()
         uses: actions/upload-artifact@v4
         with:

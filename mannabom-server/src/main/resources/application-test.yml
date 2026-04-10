@@ -1,0 +1,131 @@
+spring:
+  application:
+    name: mannabom-server
+
+  datasource:
+    url: jdbc:postgresql://${TEST_DB_HOST:localhost}:${TEST_DB_PORT:5432}/${TEST_DB_NAME:mannabom_test}
+    username: ${TEST_DB_USERNAME:testuser}
+    password: ${TEST_DB_PASSWORD:testpass}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      default_batch_fetch_size: 100
+    properties:
+      hibernate.hibernate.use_sql_comments: true
+      hibernate:
+        format_sql: true
+    show-sql: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  data:
+    redis:
+      host: ${TEST_REDIS_HOST:localhost}
+      port: ${TEST_REDIS_PORT:6379}
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 30MB
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:test@example.com}
+    password: ${MAIL_PASSWORD:test-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+app:
+  aws:
+    region: ${AWS_REGION:ap-northeast-2}
+    s3:
+      bucket-name: ${S3_BUCKET_NAME:test-bucket}
+      access-key: ${S3_ACCESS_KEY:test-access-key}
+      secret-key: ${S3_SECRET_KEY:test-secret-key}
+      base-url: ${S3_BASE_URL:http://localhost/test-bucket}
+
+  jwt:
+    secret: ${JWT_SECRET:mannabom-test-secret-key-for-ci-at-least-32chars}
+    access-token-expiration: 86_400_000
+    refresh-token-expiration: 604_800_000
+
+  kakao:
+    client-id: ${KAKAO_CLIENT_ID:test-kakao-client-id}
+    redirect-uri: http://localhost:8080/api/auth/login/kakao
+    development:
+      skip-age-verification: true
+      default-birth-year: 2000
+      default-gender: "MALE"
+
+  file:
+    upload-dir: ./uploads-test
+    base-url: http://localhost:8080/files/
+
+  email:
+    dummy-mode: true
+
+logging:
+  level:
+    com.mannabom: INFO
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+
+server:
+  port: 8080
+
+meeting:
+  cursor:
+    secret: ${MEETING_SECRET_KEY:test-meeting-secret-key}
+  match:
+    scheduler:
+      initial-delay: 1800000
+      fixed_delay: 1800000
+
+fcm:
+  service-account-path: ${FCM_FILE_PATH:}
+  project_id: ${FCM_PROJECT_ID:test-project}
+  url: https://fcm.googleapis.com/v1/projects/${fcm.project_id}/messages:send
+  google_api: https://www.googleapis.com/auth/cloud-platform
+
+match:
+  policy:
+    cooldown-hours: 72
+    candidate-pool-size: 200
+    pick-pool-size: 50
+
+ting:
+  policy:
+    vip-threshold: 200
+    cost:
+      extra-profile: 5
+      extra-profile-bundle5: 20
+      message: 40
+      like: 20
+      view-extra-photo: 5
+      view-score: 5
+      view-liked-me-profile: 5
+      view-high-score-profile: 5
+
+benefit:
+  policy:
+    membership:
+      monthly-extra-profiles: 35
+      monthly-free-messages: 10
+      monthly-free-likes: 5
+    vip:
+      daily-extra-profiles: 2
+      daily-free-messages: 0
+      daily-free-likes: 0
+    basic:
+      daily-profile: 10
+      daily-love-view: 10
