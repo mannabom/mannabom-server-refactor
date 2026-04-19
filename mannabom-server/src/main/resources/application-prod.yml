@@ -94,7 +94,7 @@ server:
 
 meeting:
   cursor:
-    secret: ${MEETING_SECRET_KEY:local-dev-key-do-not-user-in-prod}
+    secret: ${MEETING_SECRET_KEY}
   match:
     scheduler:
       initial-delay: 1800000
