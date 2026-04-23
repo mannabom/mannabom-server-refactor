@@ -29,9 +29,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'  		// 이메일 SMTP
 
     // JWT 토큰 처리
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.6'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 
     // 파일 업로드 처리 (로컬 개발용)
     implementation 'commons-io:commons-io:2.14.0'

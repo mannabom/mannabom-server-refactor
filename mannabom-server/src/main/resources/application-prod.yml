@@ -13,8 +13,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate     # update 사용 (배포용)
-      default_batch_fetch_size: 100
     show-sql: false        # SQL 로그 비활성화 (배포용)
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
 
   flyway:
     enabled: true
@@ -92,7 +94,7 @@ server:
 
 meeting:
   cursor:
-    secret: ${MEETING_SECRET_KEY:local-dev-key-do-not-user-in-prod}
+    secret: ${MEETING_SECRET_KEY}
   match:
     scheduler:
       initial-delay: 1800000
