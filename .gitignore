@@ -1,0 +1,53 @@
+mannabom-server/HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# Logs
+*.log
+
+# Spring local configs / secrets
+**/application-local.yml
+**/application-local.properties
+**/*.secret.*
+
+mannabom-server/.env*
+mannabom-server/src/.env*
+.DS_Store
+
+#firebase 비밀키
+**/src/main/resources/firebase/
+**/src/main/resources/firebase/*.json
